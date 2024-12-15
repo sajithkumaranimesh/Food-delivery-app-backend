@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string,
     email: string,
     password: string
@@ -22,7 +22,7 @@ const UserSchema: Schema = new Schema<IUser>({
     },
     password: {
         type: String,
-        required: [true, "Please provide password !"]
+        required: [true, "Please provide password !"],
     },
     passwordConfirm: {
         type: String,

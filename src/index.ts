@@ -1,13 +1,11 @@
 import path from 'path';
-import express from "express";
+import app from './app';
 import dotenv from "dotenv";
 import mongoose from 'mongoose';
 
 dotenv.config({ path: path.resolve(__dirname, '../config.env') });
 
-const app = express();
-
-const DB = process.env.DATABASE_LOCAL || 'mongodb://localhost:27017/default-db';
+const DB = process.env.DATABASE_LOCAL || 'mongodb://localhost:27017/food-app';
 
 mongoose.connect(DB).then((con) => {
     console.log("DB connection successfuly!");
