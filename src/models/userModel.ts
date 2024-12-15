@@ -1,7 +1,8 @@
-import mongoose, {Schema,Document} from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import validator from "validator";
+import bcrypt from "bcrypt";
 
-interface IUser extends Document{
+interface IUser extends Document {
     name: string,
     email: string,
     password: string
@@ -9,12 +10,12 @@ interface IUser extends Document{
     createdAt?: Date,
 }
 
-const UserSchema:Schema = new Schema<IUser>({
+const UserSchema: Schema = new Schema<IUser>({
     name: {
         type: String,
         required: [true, "Please provide your name !"]
     },
-    email:{
+    email: {
         type: String,
         required: [true, "Please provide your email!"],
         validate: [validator.isEmail, "Please provide a valid email !"]
@@ -23,8 +24,8 @@ const UserSchema:Schema = new Schema<IUser>({
         type: String,
         required: [true, "Please provide password !"]
     },
-    passwordConfirm:{
-        type:String,
+    passwordConfirm: {
+        type: String,
         required: [true, "Please confirm your password !"]
     },
     createdAt: {
@@ -33,16 +34,23 @@ const UserSchema:Schema = new Schema<IUser>({
     }
 })
 
-UserSchema.pre('save', function(next){
+UserSchema.pre<IUser>('save', async function (next) {
     const user = this;
 
-    if(user.password !== user.passwordConfirm){
+    if (user.password !== user.passwordConfirm) {
         return next(new Error("Password do not match !"))
     }
 
-    user.passwordConfirm = undefined;
+    try {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
 
-    next();
+        user.passwordConfirm = undefined;
+        next();
+    } catch (err) {
+        next();
+    }
+
 })
 
 const User = mongoose.model<IUser>('User', UserSchema);
