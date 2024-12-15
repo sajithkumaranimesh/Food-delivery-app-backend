@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../models/userModel"
 import { IUser } from "../models/userModel";
 import jwt from "jsonwebtoken";
@@ -11,7 +11,7 @@ const signToken = (id) => {
     })
 }
 
-export const signup = async (req: Request<{}, {}, IUser>, res: Response, next) => {
+export const signup = async (req: Request<{}, {}, IUser>, res: Response, next: NextFunction) => {
     try {
         const newUser: IUser = await User.create({
             name: req.body.name,
@@ -32,7 +32,7 @@ export const signup = async (req: Request<{}, {}, IUser>, res: Response, next) =
     next();
 }
 
-export const login = async (req, res, next) => {
+export const login = async (req:Request, res:Response, next:NextFunction) => {
     try{
         const { email, password } = req.body;
 
