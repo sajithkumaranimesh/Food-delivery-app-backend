@@ -3,6 +3,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
+    correctPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
     name: string,
     email: string,
     password: string
@@ -23,6 +24,7 @@ const UserSchema: Schema = new Schema<IUser>({
     password: {
         type: String,
         required: [true, "Please provide password !"],
+        select: false,
     },
     passwordConfirm: {
         type: String,
@@ -52,6 +54,13 @@ UserSchema.pre<IUser>('save', async function (next) {
     }
 
 })
+
+UserSchema.methods.correctPassword = async function(candidatePassword:string, userPassword:string){
+    if (typeof candidatePassword !== "string" || typeof userPassword !== "string") {
+        throw new Error("Passwords must be strings");
+    }
+    return await bcrypt.compare(candidatePassword, userPassword)
+}
 
 const User = mongoose.model<IUser>('User', UserSchema);
 
