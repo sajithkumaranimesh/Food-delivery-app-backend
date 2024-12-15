@@ -4,7 +4,7 @@ import { IUser } from "../models/userModel";
 import jwt from "jsonwebtoken";
 
 
-const signToken = (id) => {
+const signToken = (id:unknown) => {
     const secret_key = process.env.JWT_SERET || "secret_key"
     return jwt.sign({ id }, secret_key, {
         expiresIn: process.env.JWT_EXPIRES_IN
