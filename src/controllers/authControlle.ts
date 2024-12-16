@@ -51,3 +51,20 @@ export const login = catchAsync(
         });
     }
 );
+
+
+export const forgotPassword = catchAsync(async (req:Request, res:Response, next:NextFunction) => {
+    const user = await User.findOne({email: req.body.email})
+    if(!user){
+        return next(new AppError("There is no user with that email.", 404))
+    }
+
+    const resetToken = user.createPasswordResetToken();
+    
+    await user.save({validateBeforeSave: true});
+
+    const resetURL = `${req.protocol}://${req.get("host")}/api/v1/users/resetPassword/${resetToken}`;
+
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+});
