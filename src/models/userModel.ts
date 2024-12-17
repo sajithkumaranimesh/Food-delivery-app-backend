@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Query } from "mongoose";
 import crypto from "crypto";
 import validator from "validator";
 import bcrypt from "bcrypt";
@@ -6,13 +6,15 @@ import bcrypt from "bcrypt";
 export interface IUser extends Document {
     correctPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
     createPasswordResetToken();
+    changedPasswordAfter(JWTTimestamp: number)
     name: string,
     email: string,
     password: string
     passwordConfirm?: string,
     createdAt?: Date,
     passwordResetToken?: string,
-    passwordResetExpires?: Date
+    passwordResetExpires?: Date,
+    passwordChangedAt?: Date
 }
 
 const UserSchema: Schema = new Schema<IUser>({
@@ -42,7 +44,10 @@ const UserSchema: Schema = new Schema<IUser>({
         type: String,
     },
     passwordResetExpires:{
-
+        type: Date,
+    },
+    passwordChangedAt: {
+        type: Date,
     }
 })
 
@@ -65,6 +70,28 @@ UserSchema.pre<IUser>('save', async function (next) {
 
 });
 
+UserSchema.pre('save', function(next){
+    if(!this.isModified('password') || this.isNew){
+        return next();
+    }
+
+    this.passwordChangedAt = Date.now() - 1000;
+    next();
+});
+
+UserSchema.methods.changedPasswordAfter = function (JWTTimestamp: number) {
+    if (this.passwordChangedAt instanceof Date) {
+        const changedTimestamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+        return JWTTimestamp < changedTimestamp;
+    }
+    return false;
+};
+
+
+UserSchema.pre(/^find/, function (this: Query<any, any>, next) {
+    this.find({ active: { $ne: false } });
+    next();
+  });
 
 UserSchema.methods.correctPassword = async function (candidatePassword: string, userPassword: string) {
     if (typeof candidatePassword !== "string" || typeof userPassword !== "string") {

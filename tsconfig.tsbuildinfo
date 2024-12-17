@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.7.2"}
+{"root":["./src/app.ts","./src/index.ts","./src/controllers/authcontrolle.ts","./src/dto/mailoption.ts","./src/models/usermodel.ts","./src/routes/userroute.ts","./src/utils/apperror.ts","./src/utils/catchasync.ts","./src/utils/email.ts"],"version":"5.7.2"}
