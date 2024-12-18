@@ -99,9 +99,8 @@ export const forgotPassword = catchAsync(
 
 export const resetPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-
-    if(!req.params.token){
-        return next(new AppError("Token is missing from the request!", 400))
+    if (!req.params.token) {
+      return next(new AppError("Token is missing from the request!", 400));
     }
 
     const hashedToken = crypto
@@ -110,12 +109,12 @@ export const resetPassword = catchAsync(
       .digest("hex");
 
     const user = await User.findOne({
-        passwordResetToken: hashedToken,
-        passwordResetExpires: { $gt: Date.now() }
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
     });
 
-    if(!user){
-        return next(new AppError("Token is invalid or has expired ",400));
+    if (!user) {
+      return next(new AppError("Token is invalid or has expired ", 400));
     }
 
     user.password = req.body.password;
@@ -128,8 +127,8 @@ export const resetPassword = catchAsync(
     const token = signToken(user._id);
 
     res.status(200).json({
-        status: "success",
-        token
-    })
+      status: "success",
+      token,
+    });
   }
 );
