@@ -18,3 +18,12 @@ export const retrieve = async () => {
         return error;
     }
 }
+
+export const retrieveById = async (id:string) => {
+    try {
+        const item = await Item.findById(id);
+        return item;
+    } catch (error) {
+        return error;
+    }
+}

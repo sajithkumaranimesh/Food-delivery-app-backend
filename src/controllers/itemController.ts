@@ -36,3 +36,16 @@ export const retrieve = async (req:Request, res:Response, next:NextFunction) => 
     }
     next();
 }
+
+export const retrieveById = async (req:Request<{id:string}, {}, {}>, res:Response, next:NextFunction) => {
+    try{
+        const item = await itemService.retrieveById(req.params.id);
+        res.status(200).json({
+            status: "success",
+            item
+        })
+    }catch(err){
+        next(err);
+    }
+    next();
+}
