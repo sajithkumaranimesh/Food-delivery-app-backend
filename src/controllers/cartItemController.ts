@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CartItemDto } from "../dto/CartItemDto";
-import * as cartService from "../service/cartService";
+import * as cartItemService from "../service/cartItemService";
 
 
 export const persist = async (req: Request<{},{},CartItemDto>, res: Response, next: NextFunction) => {
@@ -12,7 +12,7 @@ export const persist = async (req: Request<{},{},CartItemDto>, res: Response, ne
             totalPrice: req.body.totalPrice,
             cartID: req.body.cartID
         }
-        const savedCartItem = await cartService.persist(newCartItem);
+        const savedCartItem = await cartItemService.persist(newCartItem);
         res.status(201).json({
             status: "success",
             savedCartItem
@@ -25,7 +25,7 @@ export const persist = async (req: Request<{},{},CartItemDto>, res: Response, ne
 
 export const retrieve = async (req: Request, res: Response, next: NextFunction) => {
     try{
-        const cartItems = await cartService.retrieve();
+        const cartItems = await cartItemService.retrieve();
         res.status(200).json({
             status: "success",
             cartItems
@@ -38,7 +38,7 @@ export const retrieve = async (req: Request, res: Response, next: NextFunction) 
 export const retrieveById = async (req: Request<{id: string}, {}, {}>, res: Response, next: NextFunction) => {
     try{
         const {id} = req.params;
-        const cartItem = await cartService.retrieveById(id);
+        const cartItem = await cartItemService.retrieveById(id);
         res.status(200).json({
             status: "success",
             cartItem
@@ -59,7 +59,7 @@ export const updateById = async (req: Request<{id: string},{},CartItemDto>, res:
             totalPrice: req.body.totalPrice,
             cartID: req.body.cartID
         }
-        const cartItem = await cartService.updateById(id, updatedCartItem);
+        const cartItem = await cartItemService.updateById(id, updatedCartItem);
         res.status(200).json({
             status: "success",
             cartItem
@@ -72,7 +72,7 @@ export const updateById = async (req: Request<{id: string},{},CartItemDto>, res:
 export const deleteById = async (req: Request<{id: string}, {}, {}>, res: Response, next: NextFunction) => {
     try{
         const {id} = req.params;
-        const cartItem = await cartService.deleteById(id);
+        const cartItem = await cartItemService.deleteById(id);
         res.status(200).json({
             status: "success",
             cartItem
