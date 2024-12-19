@@ -39,7 +39,8 @@ export const retrieve = async (req:Request, res:Response, next:NextFunction) => 
 
 export const retrieveById = async (req:Request, res:Response, next:NextFunction) => {
     try{
-        const category = await categoryService.retrieveById(req.body.id);
+        const {id} = req.params;
+        const category = await categoryService.retrieveById(id);
         res.status(200).json({
             status: "success",
             category
@@ -66,7 +67,7 @@ export const deleteById = async (req:Request, res:Response, next:NextFunction) =
     next();
 }
 
-export const update = async (req:Request, res:Response, next:NextFunction) => {
+export const updateById = async (req:Request, res:Response, next:NextFunction) => {
     
     try{
         const {id} = req.params;
@@ -76,7 +77,7 @@ export const update = async (req:Request, res:Response, next:NextFunction) => {
             isActive: req.body.isActive,
             imagUrl: req.body.imagUrl
         }
-        const updatedCategory = await categoryService.update(id, category);
+        const updatedCategory = await categoryService.updateById(id, category);
         res.sendStatus(200).json({
             status: "success",
             updatedCategory
