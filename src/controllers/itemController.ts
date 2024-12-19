@@ -73,3 +73,17 @@ export const updateById = async (req:Request<{id:string},{},ItemDto>, res:Respon
     }
     next();
 }
+
+export const deleteById = async (req:Request<{id:string}, {}, {}>, res:Response, next:NextFunction) => {
+    try{
+        const {id} = req.params;
+        const deletedItem = await itemService.deleteById(id);
+        res.status(204).json({
+            status: "success",
+            deletedItem
+        })
+    }catch(err){
+        next(err);
+    }
+    next();
+}

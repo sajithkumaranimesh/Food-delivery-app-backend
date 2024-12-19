@@ -36,3 +36,12 @@ export const updateById = async (id:string, item:ItemDto) => {
         return error;
     }
 }
+
+export const deleteById = async (id:string) => {
+    try {
+        const deletedItem = await Item.findByIdAndDelete(id);
+        return deletedItem;
+    } catch (error) {
+        return error;
+    }
+}
