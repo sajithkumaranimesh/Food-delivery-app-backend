@@ -19,3 +19,12 @@ export const retrieve = async () => {
         return err;
     }
 }
+
+export const retrieveById = async (id: string) => {
+    try{
+        const cartItem = await CartItem.findById(id);
+        return cartItem;
+    }catch(err){
+        return err;
+    }
+}
