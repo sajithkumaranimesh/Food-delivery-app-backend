@@ -2,7 +2,7 @@ import{ NextFunction, Request, Response } from "express"
 import { ItemDto } from "../dto/ItemDto"
 import * as itemService from "../service/itemService"
 
-export const persist = async (req:Request<{},{},ItemDto>, res:Response, next:NextFunction) => {
+export const persist = async (req:Request<{}, {},ItemDto>, res:Response, next:NextFunction) => {
     try{
         const newItem = {
             name: req.body.name,
