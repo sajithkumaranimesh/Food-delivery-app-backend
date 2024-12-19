@@ -28,3 +28,21 @@ export const retrieveById = async (id: string) => {
         return err;
     }
 }
+
+export const updateById = async (id: string, cartItemDto: CartItemDto) => {
+    try{
+        const cartItem = await CartItem.findByIdAndUpdate  (id, cartItemDto);
+        return cartItem;
+    }catch(err){
+        return err;
+    }
+}
+
+export const deleteById = async (id:string) => {
+    try{
+        const cartItem = await CartItem.findByIdAndDelete(id);
+        return cartItem;
+    }catch(err){
+        return err;
+    }
+}
