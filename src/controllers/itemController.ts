@@ -23,3 +23,16 @@ export const persist = async (req:Request<{},{},ItemDto>, res:Response, next:Nex
     }
     next();
 }
+
+export const retrieve = async (req:Request, res:Response, next:NextFunction) => {
+    try{
+        const itemList = await itemService.retrieve();
+        res.status(200).json({
+            status: "success",
+            itemList
+        })
+    }catch(err){
+        next(err);
+    }
+    next();
+}

@@ -9,3 +9,12 @@ export const persist = async (item:ItemDto) => {
         return error;
     }
 }
+
+export const retrieve = async () => {
+    try {
+        const itemList = await Item.find();
+        return itemList;
+    } catch (error) {  
+        return error;
+    }
+}
