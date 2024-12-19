@@ -27,3 +27,12 @@ export const retrieveById = async (id:string) => {
         return error;
     }
 }
+
+export const updateById = async (id:string, item:ItemDto) => {
+    try {
+        const updatedItem = await Item.findByIdAndUpdate(id, item);
+        return updatedItem;
+    } catch (error) {
+        return error;
+    }
+}

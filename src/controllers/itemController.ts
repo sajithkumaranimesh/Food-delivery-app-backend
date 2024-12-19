@@ -39,10 +39,34 @@ export const retrieve = async (req:Request, res:Response, next:NextFunction) => 
 
 export const retrieveById = async (req:Request<{id:string}, {}, {}>, res:Response, next:NextFunction) => {
     try{
-        const item = await itemService.retrieveById(req.params.id);
+        const {id} = req.params;
+        const item = await itemService.retrieveById(id);
         res.status(200).json({
             status: "success",
             item
+        })
+    }catch(err){
+        next(err);
+    }
+    next();
+}
+
+export const updateById = async (req:Request<{id:string},{},ItemDto>, res:Response, next:NextFunction) => {
+    try{
+        const {id} = req.params;
+        const item = {
+            name: req.body.name,
+            description: req.body.description,
+            price: req.body.price,
+            stockQuantity: req.body.stockQuantity,
+            imgURL: req.body.imgURL,
+            availabilityStatus: req.body.availabilityStatus,
+            categoryID: req.body.categoryID
+        }
+        const updatedItem = await itemService.updateById(id, item);
+        res.status(200).json({
+            status: "success",
+            updatedItem
         })
     }catch(err){
         next(err);
