@@ -19,13 +19,14 @@ export const retrieveById = async (id: string) => {
 }
 
 export const deleteById = async (id: string) => {
-    const categoryId = new mongoose.Types.ObjectId(id);
-    const deletedCategory = await Category.findOneAndDelete(categoryId);
+    console.log(id);
+    const objectId = new mongoose.Types.ObjectId(id);
+    const deletedCategory = await Category.findByIdAndDelete(objectId);
     return deletedCategory;
 }
 
 
-export const update = async (category: CategoryDto) => {
-    const updatedCategory = await Category.findByIdAndUpdate(category);
+export const update = async (id: string, category: CategoryDto) => {
+    const updatedCategory = await Category.findByIdAndUpdate(id, category);
     return updatedCategory;
 }
