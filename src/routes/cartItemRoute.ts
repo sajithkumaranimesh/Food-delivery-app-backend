@@ -9,6 +9,4 @@ cartItemRouter.get('/retrieve/:id', retrieveById);
 cartItemRouter.put('/update/:id', updateById);  
 cartItemRouter.delete('/delete/:id', deleteById);
 
-
-
 export default cartItemRouter;
