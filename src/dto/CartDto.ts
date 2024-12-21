@@ -3,4 +3,5 @@ export interface CartDto{
     diliveryFee: number;
     total: number;
     status: boolean;
+    createdAt: Date;
 }

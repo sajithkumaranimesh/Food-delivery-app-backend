@@ -17,6 +17,10 @@ const CartSchema = new Schema<CartDto>({
     status: {
         type: Boolean,
         required: [true, "Please provide status!"]
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 });
 
