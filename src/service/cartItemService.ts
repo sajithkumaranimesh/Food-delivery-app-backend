@@ -1,5 +1,5 @@
 import { CartItemDto } from "../dto/CartItemDto";
-import CartItem from "../models/cartModel";
+import CartItem from "../models/cartItemModel";
 
 export const persist = async (cartItemDto: CartItemDto) => {
     try{
